@@ -1,22 +1,21 @@
-import React,{useEffect,useState, useRef} from "react";
+import React,{useEffect, useRef} from "react";
 import IFrame from "./iFrame";
       
 const App: React.FC = () => {
-    const [parentContent, setParentContent] = useState('');
 
     const refs = useRef<HTMLIFrameElement>(null);
     
-    // useEffect(()=>{
-    //     window.addEventListener('message',processMessage,false)
-    //     return ()=>window.removeEventListener('message',processMessage);
-    // },[])
+    useEffect(()=>{
+        window.addEventListener('message',processMessage,false)
+        return ()=>window.removeEventListener('message',processMessage);
+    },[])
 
     const processMessage = (event:MessageEvent)=>{
         if(event.origin !== 'http://localhost:8080') {
             return;
         }
-        setParentContent(event.data);
-        console.log('parent Event Listener');
+        //setParentContent(event.data);
+        console.log('parent Event Listener',event);
     }
 
     const buttonClick = (event:React.MouseEvent) => {
@@ -29,7 +28,6 @@ const App: React.FC = () => {
     }
     return (
     <> 
-    
     <button onClick={buttonClick} style={{"display":"block"}}>Send message to child</button>
     <IFrame ref={refs}/>
     </>
