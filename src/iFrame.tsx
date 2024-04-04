@@ -16,7 +16,7 @@ var button = document.getElementById("replyButton");
 button.addEventListener("click", function() {
   // Function to perform when the button is clicked
   console.log('sending message to parent');
-  window.postMessage('Message from Child. Listen to me!');
+  window.parent.postMessage('Message from Child. Listen to me!');
   // You can add more functionality here, like replying to the parent element
 });
 </script>
