@@ -6,18 +6,16 @@ interface IFrameProps {
 
 const html = `<html>
 <body>
-<div>Hello Div</div>
+<div id="changeText" value="changeText">Hello Div</div>
 <button value="replyButton" id="replyButton">Reply to parent</button>
 <script>
 // Get the button element
 var button = document.getElementById("replyButton");
 
-// Add click event listener
+// click event listener
 button.addEventListener("click", function() {
-  // Function to perform when the button is clicked
   console.log('sending message to parent');
   window.parent.postMessage('Message from Child. Listen to me!');
-  // You can add more functionality here, like replying to the parent element
 });
 </script>
 </body>
@@ -39,6 +37,13 @@ const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>((prop,ref)=>{
         if(event.origin !== 'http://localhost:8080') {
             return;
         }
+
+        const node = document.createElement('div');
+        const textNode = document.createTextNode(event?.data)
+        node.appendChild(textNode);
+        //iframeRef?.current?.appendChild(textNode);
+        iframeRef?.current?.contentWindow?.document.body.appendChild(textNode);
+        console.log(iframeRef?.current);
     }
 
     return(

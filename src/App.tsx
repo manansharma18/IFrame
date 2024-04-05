@@ -27,10 +27,10 @@ const App: React.FC = () => {
      refs?.current?.contentWindow?.postMessage('Message from parent','*');
     }
     return (
-    <> 
-    <button onClick={buttonClick} style={{"display":"block"}}>Send message to child</button>
+    <div> 
+    <button style={{"margin":"10px", "marginLeft":"0px"}} onClick={buttonClick}>Send message to child</button>
     <IFrame ref={refs}/>
-    </>
+    </div>
     );
 };
 
