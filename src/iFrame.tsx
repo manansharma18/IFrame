@@ -1,8 +1,8 @@
-import React, {useEffect, forwardRef, ForwardedRef} from "react";
+import React, { useEffect, forwardRef, ForwardedRef } from "react";
 
 interface IFrameProps {
-    ref: ForwardedRef<HTMLIFrameElement>;
-  }
+  ref: ForwardedRef<HTMLIFrameElement>;
+}
 
 const html = `<html>
 <body>
@@ -21,38 +21,44 @@ button.addEventListener("click", function() {
 </body>
 </html>`;
 
-const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>((prop,ref)=>{
-    const iframeRef = ref as React.MutableRefObject<HTMLIFrameElement>;
-    useEffect(()=>{
-        console.log('mounted')
-        iframeRef?.current?.contentWindow?.addEventListener('message',processMessage,false); 
-        return () =>{
-            console.log('unmounted')
-            iframeRef?.current?.contentWindow?.removeEventListener('message',processMessage,false);
-        } 
-    },[iframeRef?.current])
+const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>((prop, ref) => {
+  const iframeRef = ref as React.MutableRefObject<HTMLIFrameElement>;
+  useEffect(() => {
+    console.log("mounted");
+    iframeRef?.current?.contentWindow?.addEventListener(
+      "message",
+      processMessage,
+      false
+    );
+    return () => {
+      console.log("unmounted");
+      iframeRef?.current?.contentWindow?.removeEventListener(
+        "message",
+        processMessage,
+        false
+      );
+    };
+  }, [iframeRef?.current]);
 
-    const processMessage = (event:MessageEvent)=>{
-        console.log('iFrame Event Listener');
-        if(event.origin !== 'http://localhost:8080') {
-            return;
-        }
-
-        const node = document.createElement('div');
-        const textNode = document.createTextNode(event?.data)
-        node.appendChild(textNode);
-        //iframeRef?.current?.appendChild(textNode);
-        iframeRef?.current?.contentWindow?.document.body.appendChild(textNode);
-        console.log(iframeRef?.current);
+  const processMessage = (event: MessageEvent) => {
+    console.log("iFrame Event Listener");
+    if (event.origin !== "http://localhost:8080") {
+      return;
     }
 
-    return(
-    <div>
-    <iframe id="1" {...prop} ref={ref} srcDoc={html}>
-    </iframe>
-    </div>
-    )
-})
+    const node = document.createElement("div");
+    const textNode = document.createTextNode(event?.data);
+    node.appendChild(textNode);
+    //iframeRef?.current?.appendChild(textNode);
+    iframeRef?.current?.contentWindow?.document.body.appendChild(textNode);
+    console.log(iframeRef?.current);
+  };
 
+  return (
+    <div>
+      <iframe id="1" {...prop} ref={ref} srcDoc={html}></iframe>
+    </div>
+  );
+});
 
 export default IFrame;
